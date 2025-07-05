@@ -17,7 +17,9 @@ import {
   Plus,
   Bell,
   Settings,
-  LogOut
+  LogOut,
+  Menu,
+  X
 } from 'lucide-react';
 
 export const Dashboard = () => {
@@ -26,6 +28,7 @@ export const Dashboard = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [editingAccount, setEditingAccount] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { accounts, isLoading } = useAccounts();
   const { user, logout } = useAuth();
@@ -83,7 +86,7 @@ export const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
@@ -95,25 +98,28 @@ export const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
+            {/* Logo and Title */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="flex items-center space-x-2">
                 <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                  <BarChart3 className="w-6 h-6 text-white" />
+                  <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CoreCreator</h1>
+                <h1 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">CoreCreator</h1>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                 <img 
                   src={user?.avatar} 
                   alt={user?.name}
                   className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-600"
                 />
-                <span>Welcome, {user?.name}</span>
+                <span className="hidden lg:inline">Welcome, {user?.name}</span>
               </div>
               <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                 <Bell className="w-5 h-5" />
@@ -133,26 +139,79 @@ export const Dashboard = () => {
               </button>
               <button 
                 onClick={() => setShowAddModal(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 lg:px-4 lg:py-2 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
               >
                 <Plus className="w-4 h-4" />
-                <span>Add Account</span>
+                <span className="hidden lg:inline">Add Account</span>
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center space-x-2">
+              <button 
+                onClick={() => setShowAddModal(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4">
+              <div className="flex flex-col space-y-3">
+                <div className="flex items-center space-x-3 px-2 py-2">
+                  <img 
+                    src={user?.avatar} 
+                    alt={user?.name}
+                    className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-600"
+                  />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Welcome, {user?.name}</span>
+                </div>
+                <button className="flex items-center space-x-3 px-2 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                  <Bell className="w-5 h-5" />
+                  <span>Notifications</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSettingsModal(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 px-2 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <Settings className="w-5 h-5" />
+                  <span>Settings</span>
+                </button>
+                <button
+                  onClick={logout}
+                  className="flex items-center space-x-3 px-2 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {accounts.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-8 sm:py-12">
             <div className="max-w-md mx-auto">
               <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Plus className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Get Started</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">Add your first social media account to start tracking your performance and growth.</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm sm:text-base">Add your first social media account to start tracking your performance and growth.</p>
                 <button
                   onClick={() => setShowAddModal(true)}
                   className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2 mx-auto"
@@ -166,48 +225,48 @@ export const Dashboard = () => {
         ) : (
           <>
             {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
               <MetricsCard
                 title="Total Followers"
                 value={formatNumber(totalMetrics.followers)}
                 growth={avgGrowth.followers}
-                icon={<Users className="w-6 h-6" />}
+                icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />}
                 color="blue"
               />
               <MetricsCard
                 title="Total Views"
                 value={formatNumber(totalMetrics.views)}
                 growth={avgGrowth.views}
-                icon={<Eye className="w-6 h-6" />}
+                icon={<Eye className="w-5 h-5 sm:w-6 sm:h-6" />}
                 color="purple"
               />
               <MetricsCard
                 title="Total Comments"
                 value={formatNumber(totalMetrics.comments)}
                 growth={avgGrowth.comments}
-                icon={<MessageCircle className="w-6 h-6" />}
+                icon={<MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />}
                 color="teal"
               />
               <MetricsCard
                 title="Total Revenue"
                 value={`$${formatNumber(totalMetrics.revenue)}`}
                 growth={avgGrowth.revenue}
-                icon={<DollarSign className="w-6 h-6" />}
+                icon={<DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />}
                 color="green"
               />
             </div>
 
             {/* Analytics Chart */}
             {totalMetrics.followers > 0 && (
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Analytics Overview</h2>
-                  <div className="flex space-x-2">
+              <div className="mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 space-y-3 sm:space-y-0">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Analytics Overview</h2>
+                  <div className="flex flex-wrap gap-2">
                     {['followers', 'views', 'revenue'].map((metric) => (
                       <button
                         key={metric}
                         onClick={() => setSelectedMetric(metric)}
-                        className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                        className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
                           selectedMetric === metric
                             ? 'bg-blue-500 text-white'
                             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -223,15 +282,15 @@ export const Dashboard = () => {
             )}
 
             {/* Account Cards */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Your Accounts</h2>
+            <div className="mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">Your Accounts</h2>
                 <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                   <TrendingUp className="w-4 h-4" />
                   <span>{accounts.filter(a => a.followersGrowth > 0).length} accounts growing</span>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 {accounts.map((account) => (
                   <AccountCard 
                     key={account.id} 
@@ -243,30 +302,30 @@ export const Dashboard = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Stats</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-600">{accounts.length}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Connected Accounts</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600">{accounts.length}</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Connected Accounts</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-600">
+                  <p className="text-xl sm:text-2xl font-bold text-purple-600">
                     {totalMetrics.followers > 0 ? (totalMetrics.comments / totalMetrics.followers * 100).toFixed(1) : '0.0'}%
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Avg Engagement</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Avg Engagement</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-teal-600">
+                  <p className="text-xl sm:text-2xl font-bold text-teal-600">
                     ${totalMetrics.followers > 0 ? (totalMetrics.revenue / totalMetrics.followers * 1000).toFixed(2) : '0.00'}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Revenue per 1K</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Revenue per 1K</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">
+                  <p className="text-xl sm:text-2xl font-bold text-green-600">
                     {accounts.filter(a => a.followersGrowth > 0).length}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Growing Accounts</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Growing Accounts</p>
                 </div>
               </div>
             </div>

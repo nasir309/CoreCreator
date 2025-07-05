@@ -12,18 +12,18 @@ export const MetricsCard = ({ title, value, growth, icon, color }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-lg bg-gradient-to-r ${colorClasses[color]} text-white`}>
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className={`p-2 sm:p-3 rounded-lg bg-gradient-to-r ${colorClasses[color]} text-white`}>
           {icon}
         </div>
-        <div className={`flex items-center text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
-          {isPositive ? <TrendingUp className="w-4 h-4 mr-1" /> : <TrendingDown className="w-4 h-4 mr-1" />}
+        <div className={`flex items-center text-xs sm:text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+          {isPositive ? <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1" /> : <TrendingDown className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />}
           {Math.abs(growth).toFixed(1)}%
         </div>
       </div>
-      <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium mb-1">{title}</h3>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+      <h3 className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm font-medium mb-1">{title}</h3>
+      <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
     </div>
   );
 };

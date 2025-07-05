@@ -22,12 +22,12 @@ export const AnalyticsChart = ({ data, metric }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 capitalize">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100 dark:border-gray-700">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 capitalize">
         {metric} Analytics
       </h3>
       
-      <div className="h-64 relative">
+      <div className="h-48 sm:h-64 relative overflow-hidden">
         <svg width="100%" height="100%" viewBox="0 0 400 200" className="overflow-visible">
           {/* Grid lines */}
           <defs>
@@ -69,7 +69,7 @@ export const AnalyticsChart = ({ data, metric }) => {
         </svg>
         
         {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 -ml-12">
+        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 -ml-8 sm:-ml-12">
           <span>{formatValue(maxValue)}</span>
           <span>{formatValue(minValue + range * 0.5)}</span>
           <span>{formatValue(minValue)}</span>
@@ -77,9 +77,9 @@ export const AnalyticsChart = ({ data, metric }) => {
       </div>
       
       {/* X-axis labels */}
-      <div className="flex justify-between mt-4 text-xs text-gray-500 dark:text-gray-400">
+      <div className="flex justify-between mt-4 text-xs text-gray-500 dark:text-gray-400 overflow-hidden">
         {data.map((item, index) => (
-          <span key={index} className={index % 2 === 0 ? 'block' : 'hidden sm:block'}>
+          <span key={index} className={`${index % 2 === 0 ? 'block' : 'hidden sm:block'} truncate`}>
             {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         ))}
