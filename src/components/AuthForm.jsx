@@ -50,15 +50,15 @@ export const AuthForm = ({ mode, onToggleMode }) => {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-4">
-              <span className="text-2xl font-bold text-white">SH</span>
+              <span className="text-2xl font-bold text-white">CC</span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {mode === 'login' ? 'Welcome Back' : 'Create Account'}
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
               {mode === 'login' 
-                ? 'Sign in to your SocialHub account' 
-                : 'Join SocialHub to manage your social media'
+                ? 'Sign in to your CoreCreator account' 
+                : 'Join CoreCreator to manage your social media'
               }
             </p>
           </div>
