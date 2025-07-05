@@ -103,7 +103,7 @@ export const Dashboard = () => {
                 <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">SocialHub</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CoreCreator</h1>
               </div>
             </div>
             <div className="flex items-center space-x-4">
